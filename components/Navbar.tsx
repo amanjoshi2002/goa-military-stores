@@ -59,6 +59,7 @@ export default function Navbar() {
               <button 
                 className="lg:hidden"
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
+                aria-label="Toggle Menu"
               >
                 {isMenuOpen ? (
                   <X className="h-6 w-6" />
@@ -71,8 +72,9 @@ export default function Navbar() {
               </div>
             </div>
 
+            {/* Desktop Menu */}
             <div className="hidden lg:flex items-center space-x-8">
-              <a href="/" className="font-medium">HOME</a>
+              <a href="/" className="font-medium hover:text-[#b08968] transition-colors">HOME</a>
               
               {/* Categories Dropdown */}
               <div 
@@ -80,7 +82,7 @@ export default function Navbar() {
                 onMouseEnter={() => setHoveredCategory(null)}
                 onMouseLeave={() => setHoveredCategory(null)}
               >
-                <button className="flex items-center space-x-1 font-medium">
+                <button className="flex items-center space-x-1 font-medium hover:text-[#b08968] transition-colors">
                   <span>CATEGORIES</span>
                   <ChevronDown className="h-4 w-4" />
                 </button>
@@ -117,30 +119,30 @@ export default function Navbar() {
                 </div>
               </div>
 
-              <a href="/products" className="font-medium">PRODUCTS</a>
-              <a href="#about" className="font-medium">ABOUT US</a>
-              <a href="#gallery" className="font-medium">GALLERY</a>
-              <a href="#testimonials" className="font-medium">TESTIMONIALS</a>
-              <a href="#contact" className="font-medium">CONTACT US</a>
+              <a href="/products" className="font-medium hover:text-[#b08968] transition-colors">PRODUCTS</a>
+              <a href="#about" className="font-medium hover:text-[#b08968] transition-colors">ABOUT US</a>
+              <a href="#gallery" className="font-medium hover:text-[#b08968] transition-colors">GALLERY</a>
+              <a href="#contact" className="font-medium hover:text-[#b08968] transition-colors">CONTACT US</a>
             </div>
 
+            {/* Search Bar and Cart */}
             <div className="flex items-center space-x-4">
               <div className="relative">
                 <input
                   type="text"
                   placeholder="Search"
-                  className="w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-[#b08968]"
+                  className="w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-[#b08968] sm:w-48"
                 />
               </div>
-              <button className="p-2 hover:bg-gray-100 rounded-full">
+              {/* <button className="p-2 hover:bg-gray-100 rounded-full">
                 <ShoppingCart className="h-6 w-6" />
-              </button>
+              </button> */}
             </div>
           </div>
 
           {/* Mobile Menu */}
           {isMenuOpen && (
-            <div className="lg:hidden absolute top-full left-0 right-0 bg-white shadow-lg py-4">
+            <div className="lg:hidden absolute top-full left-0 right-0 bg-white shadow-lg py-4 transition-all duration-300">
               <div className="flex flex-col space-y-2">
                 <a href="/" className="px-4 py-2 hover:bg-gray-100">HOME</a>
                 {categories.map((category) => (
@@ -172,7 +174,6 @@ export default function Navbar() {
                 <a href="/products" className="px-4 py-2 hover:bg-gray-100">PRODUCTS</a>
                 <a href="#about" className="px-4 py-2 hover:bg-gray-100">ABOUT US</a>
                 <a href="#gallery" className="px-4 py-2 hover:bg-gray-100">GALLERY</a>
-                <a href="#testimonials" className="px-4 py-2 hover:bg-gray-100">TESTIMONIALS</a>
                 <a href="#contact" className="px-4 py-2 hover:bg-gray-100">CONTACT US</a>
               </div>
             </div>
