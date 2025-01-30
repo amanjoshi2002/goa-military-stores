@@ -1,37 +1,17 @@
 "use client";
 
 import useEmblaCarousel from "embla-carousel-react";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
-const categories = [
-  {
-    name: "T Shirts",
-    image: "https://images.unsplash.com/photo-1581655353564-df123a1eb820?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-  },
-  {
-    name: "Pants",
-    image: "https://images.unsplash.com/photo-1604176354204-9268737828e4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-  },
-  {
-    name: "Shoes",
-    image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-  },
-  {
-    name: "Holsters",
-    image: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-  },
-  {
-    name: "Belts",
-    image: "https://images.unsplash.com/photo-1624222247344-550fb60583dc?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-  },
-  {
-    name: "Uniform Fabric",
-    image: "https://images.unsplash.com/photo-1595341888016-a392ef81b7de?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-  },
-];
+interface Category {
+  _id: string;
+  name: string;
+  photo: string;
+}
 
 export default function CategorySlider() {
+  const [categories, setCategories] = useState<Category[]>([]);
   const [emblaRef1, emblaApi1] = useEmblaCarousel({
     loop: true,
     align: "start",
@@ -43,6 +23,23 @@ export default function CategorySlider() {
     align: "start",
     slidesToScroll: 1,
   });
+
+  // Fetch categories from API
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch('/api/categories');
+        const data = await response.json();
+        if (data.success) {
+          setCategories(data.categories);
+        }
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   const scrollPrev1 = useCallback(() => emblaApi1 && emblaApi1.scrollPrev(), [emblaApi1]);
   const scrollNext1 = useCallback(() => emblaApi1 && emblaApi1.scrollNext(), [emblaApi1]);
@@ -66,6 +63,10 @@ export default function CategorySlider() {
     }
   }, [emblaApi1, emblaApi2]);
 
+  if (categories.length === 0) {
+    return <div className="py-16 bg-gray-50 text-center">Loading categories...</div>;
+  }
+
   return (
     <section className="py-16 bg-gray-50">
       <div className="container mx-auto px-4">
@@ -75,12 +76,12 @@ export default function CategorySlider() {
         <div className="relative mb-8">
           <div className="embla overflow-hidden" ref={emblaRef1}>
             <div className="embla__container flex">
-              {categories.slice(0, 3).map((category, index) => (
-                <div key={index} className="embla__slide flex-[0_0_300px] min-w-0 mx-4">
+              {categories.slice(0, Math.ceil(categories.length / 2)).map((category) => (
+                <div key={category._id} className="embla__slide flex-[0_0_300px] min-w-0 mx-4">
                   <div className="bg-white rounded-lg overflow-hidden shadow-md group cursor-pointer">
                     <div className="relative h-64">
                       <img
-                        src={category.image}
+                        src={category.photo}
                         alt={category.name}
                         className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-300"
                       />
@@ -114,12 +115,12 @@ export default function CategorySlider() {
         <div className="relative">
           <div className="embla overflow-hidden" ref={emblaRef2}>
             <div className="embla__container flex">
-              {categories.slice(3).map((category, index) => (
-                <div key={index} className="embla__slide flex-[0_0_300px] min-w-0 mx-4">
+              {categories.slice(Math.ceil(categories.length / 2)).map((category) => (
+                <div key={category._id} className="embla__slide flex-[0_0_300px] min-w-0 mx-4">
                   <div className="bg-white rounded-lg overflow-hidden shadow-md group cursor-pointer">
                     <div className="relative h-64">
                       <img
-                        src={category.image}
+                        src={category.photo}
                         alt={category.name}
                         className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-300"
                       />
