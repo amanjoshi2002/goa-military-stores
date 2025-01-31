@@ -3,6 +3,7 @@
 import useEmblaCarousel from "embla-carousel-react";
 import { useCallback, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import Link from 'next/link';
 
 const categories = [
   {
@@ -76,21 +77,23 @@ export default function CategorySlider() {
           <div className="embla overflow-hidden" ref={emblaRef1}>
             <div className="embla__container flex">
               {categories.slice(0, 3).map((category, index) => (
-                <div key={index} className="embla__slide flex-[0_0_300px] min-w-0 mx-4">
-                  <div className="bg-white rounded-lg overflow-hidden shadow-md group cursor-pointer">
-                    <div className="relative h-64">
-                      <img
-                        src={category.image}
-                        alt={category.name}
-                        className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-300"
-                      />
-                      <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity" />
-                    </div>
-                    <div className="p-4 text-center">
-                      <h3 className="text-xl font-semibold">{category.name}</h3>
+                <Link key={index} href={`/pages/subcategories?index=${index}`} passHref>
+                  <div className="embla__slide flex-[0_0_300px] min-w-0 mx-4">
+                    <div className="bg-white rounded-lg overflow-hidden shadow-md group cursor-pointer">
+                      <div className="relative h-64">
+                        <img
+                          src={category.image}
+                          alt={category.name}
+                          className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-300"
+                        />
+                        <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity" />
+                      </div>
+                      <div className="p-4 text-center">
+                        <h3 className="text-xl font-semibold">{category.name}</h3>
+                      </div>
                     </div>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           </div>
@@ -115,21 +118,23 @@ export default function CategorySlider() {
           <div className="embla overflow-hidden" ref={emblaRef2}>
             <div className="embla__container flex">
               {categories.slice(3).map((category, index) => (
-                <div key={index} className="embla__slide flex-[0_0_300px] min-w-0 mx-4">
-                  <div className="bg-white rounded-lg overflow-hidden shadow-md group cursor-pointer">
-                    <div className="relative h-64">
-                      <img
-                        src={category.image}
-                        alt={category.name}
-                        className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-300"
-                      />
-                      <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity" />
-                    </div>
-                    <div className="p-4 text-center">
-                      <h3 className="text-xl font-semibold">{category.name}</h3>
+                <Link key={index} href={`/pages/subcategories?index=${index + 3}`} passHref>
+                  <div className="embla__slide flex-[0_0_300px] min-w-0 mx-4">
+                    <div className="bg-white rounded-lg overflow-hidden shadow-md group cursor-pointer">
+                      <div className="relative h-64">
+                        <img
+                          src={category.image}
+                          alt={category.name}
+                          className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-300"
+                        />
+                        <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity" />
+                      </div>
+                      <div className="p-4 text-center">
+                        <h3 className="text-xl font-semibold">{category.name}</h3>
+                      </div>
                     </div>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           </div>
