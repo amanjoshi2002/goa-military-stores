@@ -2,6 +2,8 @@
 
 import { useSearchParams } from "next/navigation";
 import { itemsByCategory } from "@/app/pages/subcategories/data"; // Import the mock data
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 export default function Subcategories() {
   const searchParams = useSearchParams();
@@ -17,6 +19,9 @@ export default function Subcategories() {
   }
 
   return (
+    <>
+   
+    <Navbar/>
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-8">Items in Category</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -41,5 +46,9 @@ export default function Subcategories() {
         ))}
       </div>
     </div>
+    <Footer/>
+
+   
+    </>
   );
 }

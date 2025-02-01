@@ -41,7 +41,7 @@ export default function Testimonials() {
   return (
     <section id="testimonials" className="py-20 bg-gray-50">
       <div className="container mx-auto px-4">
-        <h2 className="text-4xl font-bold text-center mb-12">What Our Customers Say</h2>
+        <h2 className="text-xl font-bold text-center mb-12">What Our Customers Say</h2>
         
         <div className="relative">
           <div className="embla overflow-hidden" ref={emblaRef}>
