@@ -25,6 +25,7 @@ const categories = [
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [hoveredCategory, setHoveredCategory] = useState<string | null>(null);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null); // Mobile dropdown state
 
   return (
     <>
@@ -57,19 +58,14 @@ export default function Navbar() {
           <div className="flex justify-between items-center">
             <div className="flex items-center space-x-4">
               <button 
-                className="lg:hidden"
+                className="lg:hidden p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-[#b08968]"
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 aria-label="Toggle Menu"
               >
-                {isMenuOpen ? (
-                  <X className="h-6 w-6" />
-                ) : (
-                  <Menu className="h-6 w-6" />
-                )}
+                {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
               </button>
-              <div className="flex items-center space-x-2">
-                <span className="text-2xl font-bold">Noble Military Stores</span>
-              </div>
+              <span className="text-s sm:text-xl md:text-2xl font-bold">Goa Military Stores</span>
+
             </div>
 
             {/* Desktop Menu */}
@@ -119,65 +115,65 @@ export default function Navbar() {
                 </div>
               </div>
 
-              <a href="/products" className="font-medium hover:text-[#b08968] transition-colors">PRODUCTS</a>
               <a href="#about" className="font-medium hover:text-[#b08968] transition-colors">ABOUT US</a>
-              <a href="#gallery" className="font-medium hover:text-[#b08968] transition-colors">GALLERY</a>
               <a href="#contact" className="font-medium hover:text-[#b08968] transition-colors">CONTACT US</a>
             </div>
 
-            {/* Search Bar and Cart */}
+            {/* Search Bar */}
             <div className="flex items-center space-x-4">
-              <div className="relative">
+              <div className="relative w-36 sm:w-48">
                 <input
                   type="text"
                   placeholder="Search"
-                  className="w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-[#b08968] sm:w-48"
+                  className="w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-[#b08968]"
                 />
               </div>
-              {/* <button className="p-2 hover:bg-gray-100 rounded-full">
-                <ShoppingCart className="h-6 w-6" />
-              </button> */}
             </div>
           </div>
 
           {/* Mobile Menu */}
-          {isMenuOpen && (
-            <div className="lg:hidden absolute top-full left-0 right-0 bg-white shadow-lg py-4 transition-all duration-300">
-              <div className="flex flex-col space-y-2">
-                <a href="/" className="px-4 py-2 hover:bg-gray-100">HOME</a>
-                {categories.map((category) => (
-                  <div key={category.name}>
-                    <button 
-                      className="w-full px-4 py-2 hover:bg-gray-100 text-left flex items-center justify-between"
-                      onClick={() => setHoveredCategory(hoveredCategory === category.name ? null : category.name)}
-                    >
-                      <span>{category.name}</span>
-                      <ChevronDown className={`h-4 w-4 transform transition-transform ${
-                        hoveredCategory === category.name ? 'rotate-180' : ''
-                      }`} />
-                    </button>
-                    {hoveredCategory === category.name && (
-                      <div className="bg-gray-50 py-2">
-                        {category.subcategories.map((sub) => (
-                          <a
-                            key={sub}
-                            href={`/category/${category.name.toLowerCase()}/${sub.toLowerCase()}`}
-                            className="block px-8 py-2 hover:bg-gray-100"
-                          >
-                            {sub}
-                          </a>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                ))}
-                <a href="/products" className="px-4 py-2 hover:bg-gray-100">PRODUCTS</a>
-                <a href="#about" className="px-4 py-2 hover:bg-gray-100">ABOUT US</a>
-                <a href="#gallery" className="px-4 py-2 hover:bg-gray-100">GALLERY</a>
-                <a href="#contact" className="px-4 py-2 hover:bg-gray-100">CONTACT US</a>
-              </div>
+          <div 
+            className={`lg:hidden absolute top-full left-0 right-0 bg-white shadow-lg py-4 transition-all duration-300 ${
+              isMenuOpen ? "block" : "hidden"
+            }`}
+          >
+            <div className="flex flex-col space-y-2">
+              <a href="/" className="px-4 py-2 hover:bg-gray-100">HOME</a>
+
+              {/* Mobile Categories */}
+              {categories.map((category) => (
+                <div key={category.name}>
+                  <button 
+                    className="w-full px-4 py-2 hover:bg-gray-100 text-left flex items-center justify-between"
+                    onClick={() => setOpenDropdown(openDropdown === category.name ? null : category.name)}
+                  >
+                    <span>{category.name}</span>
+                    <ChevronDown className={`h-4 w-4 transform transition-transform ${
+                      openDropdown === category.name ? "rotate-180" : ""
+                    }`} />
+                  </button>
+                  {openDropdown === category.name && (
+                    <div className="bg-gray-50 py-2">
+                      {category.subcategories.map((sub) => (
+                        <a
+                          key={sub}
+                          href={`/category/${category.name.toLowerCase()}/${sub.toLowerCase()}`}
+                          className="block px-8 py-2 hover:bg-gray-100"
+                        >
+                          {sub}
+                        </a>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
+
+              <a href="/products" className="px-4 py-2 hover:bg-gray-100">PRODUCTS</a>
+              <a href="#about" className="px-4 py-2 hover:bg-gray-100">ABOUT US</a>
+              <a href="#gallery" className="px-4 py-2 hover:bg-gray-100">GALLERY</a>
+              <a href="#contact" className="px-4 py-2 hover:bg-gray-100">CONTACT US</a>
             </div>
-          )}
+          </div>
         </div>
       </nav>
     </>
