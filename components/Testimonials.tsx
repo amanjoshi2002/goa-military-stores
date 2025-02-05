@@ -1,88 +1,149 @@
 "use client";
 
-import { ChevronLeft, ChevronRight, Star } from "lucide-react";
-import useEmblaCarousel from "embla-carousel-react";
-import { useCallback } from "react";
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { Star } from "lucide-react";
 
 const testimonials = [
   {
-    name: "John Smith",
-    role: "Military Professional",
-    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-    content: "The quality of military gear from Noble Military Stores is exceptional. Their products have never let me down in the field.",
-    rating: 5
+    id: 1,
+    name: "Major Rakesh Sharma",
+    role: "Indian Army Veteran",
+    rating: 5,
+    image: "/images/client1.jpg",
+    testimonial:
+      "Noble Military Stores provides the highest quality tactical gear. Their products are battle-tested and exceed expectations!",
   },
   {
-    name: "Sarah Johnson",
-    role: "Security Consultant",
-    image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-    content: "Outstanding service and top-notch tactical equipment. The team's expertise in military gear is impressive.",
-    rating: 5
+    id: 2,
+    name: "Lt. Anjali Verma",
+    role: "Special Forces Officer",
+    rating: 4,
+    image: "/images/client2.jpg",
+    testimonial:
+      "Exceptional service and durable equipment. Highly recommended for professionals and enthusiasts alike!",
   },
   {
-    name: "Michael Brown",
-    role: "Veteran",
-    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-    content: "Been a customer for years. Their commitment to quality and authentic military products keeps me coming back.",
-    rating: 5
-  }
+    id: 3,
+    name: "Commander Arjun Mehta",
+    role: "Naval Officer",
+    rating: 5,
+    image: "/images/client3.jpg",
+    testimonial:
+      "Goa Military Store has the best selection of authentic military gear. Their customer service is top-notch!",
+  },
+  {
+    id: 4,
+    name: "Col. Vikram Singh",
+    role: "Paratrooper",
+    rating: 5,
+    image: "/images/client4.jpg",
+    testimonial:
+      "Outstanding collection and great service! A trusted store for military professionals.",
+  },
+  {
+    id: 5,
+    name: "Capt. Rohan Kapoor",
+    role: "Infantry Officer",
+    rating: 4,
+    image: "/images/client5.jpg",
+    testimonial:
+      "Authentic and durable gear at great prices. Definitely worth checking out!",
+  },
 ];
 
 export default function Testimonials() {
-  const [emblaRef, emblaApi] = useEmblaCarousel({
-    loop: true,
-    align: "start",
-    slidesToScroll: 1
-  });
+  const [currentIndex, setCurrentIndex] = useState(0);
 
-  const scrollPrev = useCallback(() => emblaApi && emblaApi.scrollPrev(), [emblaApi]);
-  const scrollNext = useCallback(() => emblaApi && emblaApi.scrollNext(), [emblaApi]);
+  const nextTestimonial = () => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % testimonials.length);
+  };
+
+  const prevTestimonial = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === 0 ? testimonials.length - 1 : prevIndex - 1
+    );
+  };
 
   return (
-    <section id="testimonials" className="py-20 bg-gray-50">
-      <div className="container mx-auto px-4">
-        <h2 className="text-xl font-bold text-center mb-12">What Our Customers Say</h2>
-        
-        <div className="relative">
-          <div className="embla overflow-hidden" ref={emblaRef}>
-            <div className="embla__container flex">
-              {testimonials.map((testimonial, index) => (
-                <div key={index} className="embla__slide flex-[0_0_100%] min-w-0 md:flex-[0_0_50%] lg:flex-[0_0_33.33%] px-4">
-                  <div className="bg-white rounded-lg shadow-lg p-8">
-                    <div className="flex items-center space-x-4 mb-6">
-                      <img
-                        src={testimonial.image}
-                        alt={testimonial.name}
-                        className="w-16 h-16 rounded-full object-cover"
-                      />
-                      <div>
-                        <h4 className="font-semibold">{testimonial.name}</h4>
-                        <p className="text-sm text-gray-500">{testimonial.role}</p>
-                        <div className="flex mt-1">
-                          {[...Array(testimonial.rating)].map((_, i) => (
-                            <Star key={i} className="w-4 h-4 fill-[#b08968] text-[#b08968]" />
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                    <p className="text-gray-600">{testimonial.content}</p>
-                  </div>
+    <section className="py-16 bg-gray-100">
+      <div className="container mx-auto px-6 md:px-12 lg:px-16">
+        <motion.h2
+          className="text-3xl sm:text-4xl font-bold text-center mb-8"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          What Our Clients Say
+        </motion.h2>
+
+        <div className="relative overflow-hidden">
+          {/* Testimonial Cards - Desktop View */}
+          <div className="hidden md:grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {testimonials.slice(currentIndex, currentIndex + 3).map((testimonial) => (
+              <motion.div
+                key={testimonial.id}
+                className="bg-white shadow-xl rounded-lg p-6 md:p-8 flex flex-col items-center text-center"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.6 }}
+              >
+                <img
+                  src={testimonial.image}
+                  alt={testimonial.name}
+                  className="w-20 h-20 rounded-full shadow-md mb-4"
+                />
+                <p className="text-lg text-gray-600 italic">"{testimonial.testimonial}"</p>
+                <div className="flex justify-center mt-3">
+                  {[...Array(testimonial.rating)].map((_, i) => (
+                    <Star key={i} className="w-5 h-5 text-yellow-500" fill="currentColor" />
+                  ))}
                 </div>
+                <h4 className="mt-4 font-semibold text-lg">{testimonial.name}</h4>
+                <p className="text-gray-500 text-sm">{testimonial.role}</p>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Testimonial Card - Mobile View (Carousel) */}
+          <motion.div
+            key={testimonials[currentIndex].id}
+            className="md:hidden bg-white shadow-xl rounded-lg p-6 md:p-8 flex flex-col items-center text-center max-w-2xl mx-auto"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6 }}
+          >
+            <img
+              src={testimonials[currentIndex].image}
+              alt={testimonials[currentIndex].name}
+              className="w-20 h-20 rounded-full shadow-md mb-4"
+            />
+            <p className="text-lg text-gray-600 italic">
+              "{testimonials[currentIndex].testimonial}"
+            </p>
+            <div className="flex justify-center mt-3">
+              {[...Array(testimonials[currentIndex].rating)].map((_, i) => (
+                <Star key={i} className="w-5 h-5 text-yellow-500" fill="currentColor" />
               ))}
             </div>
-          </div>
-          
+            <h4 className="mt-4 font-semibold text-lg">{testimonials[currentIndex].name}</h4>
+            <p className="text-gray-500 text-sm">{testimonials[currentIndex].role}</p>
+          </motion.div>
+        </div>
+
+        {/* Navigation Buttons */}
+        <div className="flex justify-center gap-4 mt-6">
           <button
-            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 w-10 h-10 flex items-center justify-center bg-white rounded-full shadow-lg hover:bg-gray-100 transition-colors z-10"
-            onClick={scrollPrev}
+            onClick={prevTestimonial}
+            className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-full transition"
           >
-            <ChevronLeft className="w-6 h-6 text-gray-800" />
+            ←
           </button>
           <button
-            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 w-10 h-10 flex items-center justify-center bg-white rounded-full shadow-lg hover:bg-gray-100 transition-colors z-10"
-            onClick={scrollNext}
+            onClick={nextTestimonial}
+            className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-full transition"
           >
-            <ChevronRight className="w-6 h-6 text-gray-800" />
+            →
           </button>
         </div>
       </div>

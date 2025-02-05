@@ -12,14 +12,14 @@ export default function ContactUs() {
           <div>
             <div className="bg-gray-50 p-8 rounded-lg mb-8">
               <h3 className="text-2xl font-semibold mb-6">Get in Touch</h3>
-              <div className="space-y-4">
+              <div className="space-y-6">
                 <div className="flex items-center space-x-4">
                   <div className="w-12 h-12 bg-[#b08968] rounded-full flex items-center justify-center">
                     <Phone className="w-6 h-6 text-white" />
                   </div>
                   <div>
                     <h4 className="font-semibold">Phone</h4>
-                    <p className="text-gray-600">+91-8888888888</p>
+                    <p className="text-gray-600">+91-7942687658</p>
                   </div>
                 </div>
                 <div className="flex items-center space-x-4">
@@ -31,13 +31,13 @@ export default function ContactUs() {
                     <p className="text-gray-600">websupport@justdial.com</p>
                   </div>
                 </div>
-                <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 bg-[#b08968] rounded-full flex items-center justify-center">
+                <div className="flex items-center space-x-8">
+                  <div className="w-16 h-16 bg-[#b08968] rounded-full flex items-center justify-center">
                     <MapPin className="w-6 h-6 text-white" />
                   </div>
                   <div>
                     <h4 className="font-semibold">Address</h4>
-                    <p className="text-gray-600">Malad West, Mumbai, India</p>
+                    <p className="text-gray-600 ">Shop No. #8, 1st Floor, Karma Paes Avenue Bldg, F L Gomes Road, Vasco Da Gama, Goa - 403802</p>
                   </div>
                 </div>
               </div>

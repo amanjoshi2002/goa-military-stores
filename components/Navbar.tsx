@@ -1,31 +1,36 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ShoppingCart, Phone, Mail, MapPin, ChevronDown, Menu, X } from "lucide-react";
 
-const categories = [
-  {
-    name: "Combat Gear",
-    subcategories: ["Tactical Vests", "Helmets", "Body Armor", "Combat Boots"]
-  },
-  {
-    name: "Uniforms",
-    subcategories: ["Combat Uniforms", "Dress Uniforms", "Training Gear", "Accessories"]
-  },
-  {
-    name: "Equipment",
-    subcategories: ["Bags & Packs", "Holsters", "Belts", "Storage Solutions"]
-  },
-  {
-    name: "Accessories",
-    subcategories: ["Patches", "Insignias", "Badges", "Tactical Gear"]
-  }
-];
+interface Category {
+  _id: string;
+  name: string;
+}
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [hoveredCategory, setHoveredCategory] = useState<string | null>(null);
-  const [openDropdown, setOpenDropdown] = useState<string | null>(null); // Mobile dropdown state
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch("/api/categories");
+        const data = await response.json();
+        if (data.success) {
+          setCategories(data.categories);
+        }
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   return (
     <>
@@ -33,9 +38,9 @@ export default function Navbar() {
       <div className="bg-[#b08968] text-white py-2 px-4">
         <div className="container mx-auto flex flex-wrap justify-between items-center">
           <div className="flex items-center space-x-4">
-            <a href="tel:+91-8888888888" className="flex items-center space-x-1 text-sm">
+            <a href="tel:+91-7942687658" className="flex items-center space-x-1 text-sm">
               <Phone className="h-4 w-4" />
-              <span className="hidden sm:inline">+91-8888888888</span>
+              <span className="hidden sm:inline">+91-7942687658</span>
             </a>
             <a href="mailto:websupport@justdial.com" className="flex items-center space-x-1 text-sm">
               <Mail className="h-4 w-4" />
@@ -45,9 +50,8 @@ export default function Navbar() {
           <div className="flex items-center space-x-4">
             <div className="flex items-center space-x-1 text-sm">
               <MapPin className="h-4 w-4" />
-              <span className="hidden sm:inline">Malad West</span>
+              <span className="hidden sm:inline">Shop No. #8, 1st Floor, Karma Paes Avenue Bldg., F L Gomes Road, Vasco Da Gama, Goa - 403802</span>
             </div>
-            <a href="/login" className="text-sm">Log In | Sign Up</a>
           </div>
         </div>
       </div>
@@ -65,7 +69,6 @@ export default function Navbar() {
                 {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
               </button>
               <span className="text-s sm:text-xl md:text-2xl font-bold">Goa Military Stores</span>
-
             </div>
 
             {/* Desktop Menu */}
@@ -73,105 +76,30 @@ export default function Navbar() {
               <a href="/" className="font-medium hover:text-[#b08968] transition-colors">HOME</a>
               
               {/* Categories Dropdown */}
-              <div 
-                className="relative group"
-                onMouseEnter={() => setHoveredCategory(null)}
-                onMouseLeave={() => setHoveredCategory(null)}
-              >
-                <button className="flex items-center space-x-1 font-medium hover:text-[#b08968] transition-colors">
+              <div className="relative">
+                <button 
+                  className="flex items-center space-x-1 font-medium hover:text-[#b08968] transition-colors"
+                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                >
                   <span>CATEGORIES</span>
                   <ChevronDown className="h-4 w-4" />
                 </button>
-                <div className="absolute left-0 mt-2 w-64 bg-white shadow-lg rounded-lg py-2 hidden group-hover:block">
+                <div className={`absolute left-0 mt-2 w-64 bg-white shadow-lg rounded-lg py-2 ${isDropdownOpen ? 'block' : 'hidden'}`}>
                   {categories.map((category) => (
-                    <div
-                      key={category.name}
-                      className="relative"
-                      onMouseEnter={() => setHoveredCategory(category.name)}
-                      onMouseLeave={() => setHoveredCategory(null)}
+                    <a
+                      key={category._id}
+                      href={`/products?category=${encodeURIComponent(category.name)}`}
+                      className="block px-4 py-2 hover:bg-gray-100"
+                      onClick={() => setIsDropdownOpen(false)}
                     >
-                      <a
-                        href={`/category/${category.name.toLowerCase()}`}
-                        className="block px-4 py-2 hover:bg-gray-100 flex items-center justify-between"
-                      >
-                        <span>{category.name}</span>
-                        <ChevronDown className="h-4 w-4" />
-                      </a>
-                      {hoveredCategory === category.name && (
-                        <div className="absolute left-full top-0 w-48 bg-white shadow-lg rounded-lg py-2">
-                          {category.subcategories.map((sub) => (
-                            <a
-                              key={sub}
-                              href={`/category/${category.name.toLowerCase()}/${sub.toLowerCase()}`}
-                              className="block px-4 py-2 hover:bg-gray-100"
-                            >
-                              {sub}
-                            </a>
-                          ))}
-                        </div>
-                      )}
-                    </div>
+                      {category.name}
+                    </a>
                   ))}
                 </div>
               </div>
 
               <a href="#about" className="font-medium hover:text-[#b08968] transition-colors">ABOUT US</a>
               <a href="#contact" className="font-medium hover:text-[#b08968] transition-colors">CONTACT US</a>
-            </div>
-
-            {/* Search Bar */}
-            <div className="flex items-center space-x-4">
-              <div className="relative w-36 sm:w-48">
-                <input
-                  type="text"
-                  placeholder="Search"
-                  className="w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-[#b08968]"
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Mobile Menu */}
-          <div 
-            className={`lg:hidden absolute top-full left-0 right-0 bg-white shadow-lg py-4 transition-all duration-300 ${
-              isMenuOpen ? "block" : "hidden"
-            }`}
-          >
-            <div className="flex flex-col space-y-2">
-              <a href="/" className="px-4 py-2 hover:bg-gray-100">HOME</a>
-
-              {/* Mobile Categories */}
-              {categories.map((category) => (
-                <div key={category.name}>
-                  <button 
-                    className="w-full px-4 py-2 hover:bg-gray-100 text-left flex items-center justify-between"
-                    onClick={() => setOpenDropdown(openDropdown === category.name ? null : category.name)}
-                  >
-                    <span>{category.name}</span>
-                    <ChevronDown className={`h-4 w-4 transform transition-transform ${
-                      openDropdown === category.name ? "rotate-180" : ""
-                    }`} />
-                  </button>
-                  {openDropdown === category.name && (
-                    <div className="bg-gray-50 py-2">
-                      {category.subcategories.map((sub) => (
-                        <a
-                          key={sub}
-                          href={`/category/${category.name.toLowerCase()}/${sub.toLowerCase()}`}
-                          className="block px-8 py-2 hover:bg-gray-100"
-                        >
-                          {sub}
-                        </a>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ))}
-
-              <a href="/products" className="px-4 py-2 hover:bg-gray-100">PRODUCTS</a>
-              <a href="#about" className="px-4 py-2 hover:bg-gray-100">ABOUT US</a>
-              <a href="#gallery" className="px-4 py-2 hover:bg-gray-100">GALLERY</a>
-              <a href="#contact" className="px-4 py-2 hover:bg-gray-100">CONTACT US</a>
             </div>
           </div>
         </div>
