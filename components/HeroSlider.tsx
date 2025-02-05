@@ -28,11 +28,12 @@ export default function HeroSlider() {
 
   useEffect(() => {
     if (emblaApi) {
-      emblaApi.on("select", () => setSelectedIndex(emblaApi.selectedScrollSnap()));
+      const onSelect = () => setSelectedIndex(emblaApi.selectedScrollSnap());
+      emblaApi.on("select", onSelect);
       const interval = setInterval(() => emblaApi.scrollNext(), 5000);
       return () => {
         clearInterval(interval);
-        emblaApi.off("select");
+        emblaApi.off("select", onSelect);
       };
     }
   }, [emblaApi]);

@@ -50,7 +50,9 @@ export default function Navbar() {
           <div className="flex items-center space-x-4">
             <div className="flex items-center space-x-1 text-sm">
               <MapPin className="h-4 w-4" />
-              <span className="hidden sm:inline">Shop No. #8, 1st Floor, Karma Paes Avenue Bldg., F L Gomes Road, Vasco Da Gama, Goa - 403802</span>
+              <a href="https://maps.app.goo.gl/duS3pNbcG6dJUsEz9" target="_blank" rel="noopener noreferrer" className="hidden sm:inline hover:text-white">
+                Shop No. #8, 1st Floor, Karma Paes Avenue Bldg., F L Gomes Road, Vasco Da Gama, Goa - 403802
+              </a>
             </div>
           </div>
         </div>
@@ -98,12 +100,46 @@ export default function Navbar() {
                 </div>
               </div>
 
-              <a href="#about" className="font-medium hover:text-[#b08968] transition-colors">ABOUT US</a>
-              <a href="#contact" className="font-medium hover:text-[#b08968] transition-colors">CONTACT US</a>
+              <a href="#about" className="font-medium hover:text-[#b08968] transition-colors" onClick={(e) => { e.preventDefault(); document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' }); }}>ABOUT US</a>
+              <a href="#contact" className="font-medium hover:text-[#b08968] transition-colors" onClick={(e) => { e.preventDefault(); document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' }); }}>CONTACT US</a>
             </div>
           </div>
         </div>
       </nav>
+
+      {/* Mobile Menu */}
+      {isMenuOpen && (
+        <div className="lg:hidden bg-white shadow-md">
+          <div className="container mx-auto px-4 py-4">
+            <a href="/" className="block py-2 hover:text-[#b08968]">HOME</a>
+            <div className="relative">
+              <button 
+                className="flex items-center space-x-1 font-medium hover:text-[#b08968] transition-colors"
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              >
+                <span>CATEGORIES</span>
+                <ChevronDown className="h-4 w-4" />
+              </button>
+              {isDropdownOpen && (
+                <div className="mt-2 bg-white shadow-lg rounded-lg py-2">
+                  {categories.map((category) => (
+                    <a
+                      key={category._id}
+                      href={`/products?category=${encodeURIComponent(category.name)}`}
+                      className="block px-4 py-2 hover:bg-gray-100"
+                      onClick={() => setIsDropdownOpen(false)}
+                    >
+                      {category.name}
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
+            <a href="#about" className="block py-2 hover:text-[#b08968]">ABOUT US</a>
+            <a href="#contact" className="block py-2 hover:text-[#b08968]">CONTACT US</a>
+          </div>
+        </div>
+      )}
     </>
   );
 }

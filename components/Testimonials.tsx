@@ -7,62 +7,39 @@ import { Star } from "lucide-react";
 const testimonials = [
   {
     id: 1,
-    name: "Major Rakesh Sharma",
-    role: "Indian Army Veteran",
-    rating: 5,
-    image: "/images/client1.jpg",
+    name: "Santosh Kumar",
+    rating: 4,
     testimonial:
-      "Noble Military Stores provides the highest quality tactical gear. Their products are battle-tested and exceed expectations!",
+      "Military accessories available\nArmy\nNavy\nAirforce\nCISF\nCRPF\nSecurity\nbut not more items like military clothes, tracksuit.",
   },
   {
     id: 2,
-    name: "Lt. Anjali Verma",
-    role: "Special Forces Officer",
+    name: "Hrishi Mathuria",
     rating: 4,
-    image: "/images/client2.jpg",
     testimonial:
-      "Exceptional service and durable equipment. Highly recommended for professionals and enthusiasts alike!",
+      "The only shop near the base that could provide you with all the Military items.",
   },
   {
     id: 3,
-    name: "Commander Arjun Mehta",
-    role: "Naval Officer",
-    rating: 5,
-    image: "/images/client3.jpg",
+    name: "Steffy Mathew",
+    rating: 4,
     testimonial:
-      "Goa Military Store has the best selection of authentic military gear. Their customer service is top-notch!",
+      "The best and only place in Goa where we get Military, Navy, NCC stuff. Good service.",
   },
   {
     id: 4,
-    name: "Col. Vikram Singh",
-    role: "Paratrooper",
-    rating: 5,
-    image: "/images/client4.jpg",
-    testimonial:
-      "Outstanding collection and great service! A trusted store for military professionals.",
-  },
-  {
-    id: 5,
-    name: "Capt. Rohan Kapoor",
-    role: "Infantry Officer",
+    name: "Manoj Kumar",
     rating: 4,
-    image: "/images/client5.jpg",
     testimonial:
-      "Authentic and durable gear at great prices. Definitely worth checking out!",
+      "Military accessories are available\nOnly one shop in Goa for military purposes.",
   },
 ];
 
 export default function Testimonials() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const nextTestimonial = () => {
+  const nextTestimonials = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % testimonials.length);
-  };
-
-  const prevTestimonial = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? testimonials.length - 1 : prevIndex - 1
-    );
   };
 
   return (
@@ -78,72 +55,59 @@ export default function Testimonials() {
         </motion.h2>
 
         <div className="relative overflow-hidden">
-          {/* Testimonial Cards - Desktop View */}
-          <div className="hidden md:grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {testimonials.slice(currentIndex, currentIndex + 3).map((testimonial) => (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Display one testimonial for small screens, three for larger screens */}
+            {window.innerWidth < 768 ? (
               <motion.div
-                key={testimonial.id}
+                key={testimonials[currentIndex].id}
                 className="bg-white shadow-xl rounded-lg p-6 md:p-8 flex flex-col items-center text-center"
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.6 }}
               >
-                <img
-                  src={testimonial.image}
-                  alt={testimonial.name}
-                  className="w-20 h-20 rounded-full shadow-md mb-4"
-                />
-                <p className="text-lg text-gray-600 italic">"{testimonial.testimonial}"</p>
+                <div className="w-20 h-20 rounded-full bg-gray-300 flex items-center justify-center mb-4">
+                  <span className="text-2xl font-bold">{testimonials[currentIndex].name.charAt(0)}</span>
+                </div>
+                <p className="text-lg text-gray-600 italic">"{testimonials[currentIndex].testimonial}"</p>
                 <div className="flex justify-center mt-3">
-                  {[...Array(testimonial.rating)].map((_, i) => (
+                  {[...Array(testimonials[currentIndex].rating)].map((_, i) => (
                     <Star key={i} className="w-5 h-5 text-yellow-500" fill="currentColor" />
                   ))}
                 </div>
-                <h4 className="mt-4 font-semibold text-lg">{testimonial.name}</h4>
-                <p className="text-gray-500 text-sm">{testimonial.role}</p>
+                <h4 className="mt-4 font-semibold text-lg">{testimonials[currentIndex].name}</h4>
               </motion.div>
-            ))}
+            ) : (
+              testimonials.slice(currentIndex, currentIndex + 3).map((testimonial) => (
+                <motion.div
+                  key={testimonial.id}
+                  className="bg-white shadow-xl rounded-lg p-6 md:p-8 flex flex-col items-center text-center"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.6 }}
+                >
+                  <div className="w-20 h-20 rounded-full bg-gray-300 flex items-center justify-center mb-4">
+                    <span className="text-2xl font-bold">{testimonial.name.charAt(0)}</span>
+                  </div>
+                  <p className="text-lg text-gray-600 italic">"{testimonial.testimonial}"</p>
+                  <div className="flex justify-center mt-3">
+                    {[...Array(testimonial.rating)].map((_, i) => (
+                      <Star key={i} className="w-5 h-5 text-yellow-500" fill="currentColor" />
+                    ))}
+                  </div>
+                  <h4 className="mt-4 font-semibold text-lg">{testimonial.name}</h4>
+                </motion.div>
+              ))
+            )}
           </div>
-
-          {/* Testimonial Card - Mobile View (Carousel) */}
-          <motion.div
-            key={testimonials[currentIndex].id}
-            className="md:hidden bg-white shadow-xl rounded-lg p-6 md:p-8 flex flex-col items-center text-center max-w-2xl mx-auto"
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6 }}
-          >
-            <img
-              src={testimonials[currentIndex].image}
-              alt={testimonials[currentIndex].name}
-              className="w-20 h-20 rounded-full shadow-md mb-4"
-            />
-            <p className="text-lg text-gray-600 italic">
-              "{testimonials[currentIndex].testimonial}"
-            </p>
-            <div className="flex justify-center mt-3">
-              {[...Array(testimonials[currentIndex].rating)].map((_, i) => (
-                <Star key={i} className="w-5 h-5 text-yellow-500" fill="currentColor" />
-              ))}
-            </div>
-            <h4 className="mt-4 font-semibold text-lg">{testimonials[currentIndex].name}</h4>
-            <p className="text-gray-500 text-sm">{testimonials[currentIndex].role}</p>
-          </motion.div>
         </div>
 
-        {/* Navigation Buttons */}
-        <div className="flex justify-center gap-4 mt-6">
+        {/* Navigation Button */}
+        <div className="flex justify-center mt-6">
           <button
-            onClick={prevTestimonial}
+            onClick={nextTestimonials}
             className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-full transition"
           >
-            ←
-          </button>
-          <button
-            onClick={nextTestimonial}
-            className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-full transition"
-          >
-            →
+            Next
           </button>
         </div>
       </div>

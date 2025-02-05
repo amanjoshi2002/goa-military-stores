@@ -44,15 +44,15 @@ export default function FeaturedProducts() {
   return (
     <section className="py-16 px-4">
       <div className="container mx-auto">
-        <h2 className="text-3xl font-bold text-center mb-12">Featured Products</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <h2 className="text-4xl font-bold text-center mb-12">Featured Products</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
           {featuredProducts.map((product) => (
-            <div key={product._id} className="group">
-              <div className="relative overflow-hidden rounded-lg">
+            <div key={product._id} className="group bg-white rounded-lg shadow-lg overflow-hidden transform transition-transform duration-300 hover:scale-105 hover:shadow-xl">
+              <div className="relative overflow-hidden">
                 <img
                   src={product.photo} // Use product.photo if that's the correct field
                   alt={product.name}
-                  className="w-full h-[300px] object-cover transform group-hover:scale-110 transition-transform duration-300"
+                  className="w-full h-72 object-cover transition-transform duration-300 transform group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity">
                   <button
@@ -63,16 +63,9 @@ export default function FeaturedProducts() {
                   </button>
                 </div>
               </div>
-              <div className="mt-4">
-                <h3 className="text-lg font-semibold">{product.name}</h3>
-                <div className="flex items-center justify-between mt-2">
-                  <span className="text-lg font-bold text-[#b08968]">{product.price}</span>
-                  <div className="flex">
-                    {[...Array(product.rating)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 fill-[#b08968] text-[#b08968]" />
-                    ))}
-                  </div>
-                </div>
+              <div className="p-6 text-center">
+                <h3 className="text-2xl font-semibold text-gray-800 mb-2">{product.name}</h3>
+                <p className="text-lg font-bold text-[#b08968]">₹{product.price}</p>
               </div>
             </div>
           ))}

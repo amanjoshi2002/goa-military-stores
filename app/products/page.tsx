@@ -1,6 +1,6 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useEffect, useState } from "react";
@@ -13,17 +13,22 @@ interface Product {
 }
 
 export default function ProductsPage() {
-  const searchParams = useSearchParams();
-  const category = searchParams ? searchParams.get("category") : null;
+  const router = useRouter();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const [category, setCategory] = useState<string | null>(null);
 
   useEffect(() => {
+    // Extract category from the URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const categoryFromParams = urlParams.get("category");
+    setCategory(categoryFromParams);
+
     const fetchProducts = async () => {
-      if (category) {
-        console.log("Fetching products for category:", category);
+      if (categoryFromParams) {
+        console.log("Fetching products for category:", categoryFromParams);
         try {
-          const response = await fetch(`/api/products?category=${category}`);
+          const response = await fetch(`/api/products?category=${categoryFromParams}`);
           const data = await response.json();
           if (data.success) {
             setProducts(data.products);
@@ -42,7 +47,7 @@ export default function ProductsPage() {
     };
 
     fetchProducts();
-  }, [category]);
+  }, []); // Run effect only once on mount
 
   const handleBuyNow = (product: Product) => {
     const message = encodeURIComponent(
@@ -52,7 +57,11 @@ export default function ProductsPage() {
   };
 
   if (loading) {
-    return <div className="text-center py-16 text-gray-600 text-lg">Loading products...</div>;
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="loader">Loading...</div>
+      </div>
+    );
   }
 
   if (!products.length) {
@@ -63,20 +72,20 @@ export default function ProductsPage() {
     <>
       <Navbar />
       <div className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-8 text-center text-gray-800">Our Products</h1>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <h1 className="text-5xl font-bold mb-10 text-center text-gray-900">Our Products</h1>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10">
           {products.map((product) => (
             <div
               key={product._id}
-              className="bg-white rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300"
+              className="bg-white rounded-lg shadow-lg overflow-hidden transform transition-transform duration-300 hover:scale-105 hover:shadow-2xl"
             >
-              <img src={product.photo} alt={product.name} className="w-full h-56 object-cover" />
-              <div className="p-5 text-center">
-                <h2 className="text-xl font-semibold text-gray-800 mb-2">{product.name}</h2>
-                <p className="text-gray-700 text-lg font-medium">₹{product.price}</p>
+              <img src={product.photo} alt={product.name} className="w-full h-72 object-cover transition-transform duration-300 transform hover:scale-110" />
+              <div className="p-6 text-center">
+                <h2 className="text-3xl font-semibold text-gray-800 mb-2">{product.name}</h2>
+                <p className="text-gray-700 text-xl font-medium mb-4">₹{product.price}</p>
                 <button
                   onClick={() => handleBuyNow(product)}
-                  className="mt-4 w-full bg-[#b08968] text-white py-2 rounded-lg hover:bg-gray-900  transition-colors duration-300"
+                  className="mt-4 w-full bg-[#b08968] text-white py-3 rounded-lg hover:bg-[#a0785b] transition-colors duration-300 shadow-md hover:shadow-lg transform hover:scale-105"
                 >
                   Buy Now
                 </button>
