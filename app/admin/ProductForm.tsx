@@ -76,11 +76,13 @@ const ProductForm: React.FC<ProductFormProps> = ({ onProductAdded, productToEdit
       alert('Product saved successfully');
       onProductAdded();
       if (productToEdit) onEditComplete();
-      setName('');
-      setPrice('');
-      setCategory('');
-      setPhoto('');
-      setFeatured(false);
+      if (!productToEdit) {
+        setName('');
+        setPrice('');
+        setCategory('');
+        setPhoto('');
+        setFeatured(false);
+      }
     } else {
       alert('Error saving product');
     }

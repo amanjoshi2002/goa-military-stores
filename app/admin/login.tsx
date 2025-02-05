@@ -1,11 +1,16 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { setCookie } from "cookies-next";
 
 const AdminLogin = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [isClient, setIsClient] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -20,6 +25,10 @@ const AdminLogin = () => {
       alert("Invalid credentials");
     }
   };
+
+  if (!isClient) {
+    return null; // or a loading spinner
+  }
 
   return (
     <div>
