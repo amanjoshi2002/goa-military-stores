@@ -37,6 +37,7 @@ const testimonials = [
 
 export default function Testimonials() {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const isBrowser = typeof window !== 'undefined'; // Check if running in the browser
 
   const nextTestimonials = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % testimonials.length);
@@ -57,7 +58,7 @@ export default function Testimonials() {
         <div className="relative overflow-hidden">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Display one testimonial for small screens, three for larger screens */}
-            {window.innerWidth < 768 ? (
+            {isBrowser && window.innerWidth < 768 ? (
               <motion.div
                 key={testimonials[currentIndex].id}
                 className="bg-white shadow-xl rounded-lg p-6 md:p-8 flex flex-col items-center text-center"

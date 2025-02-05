@@ -19,10 +19,14 @@ export default function ProductsPage() {
   const [category, setCategory] = useState<string | null>(null);
 
   useEffect(() => {
-    // Extract category from the URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const categoryFromParams = urlParams.get("category");
-    setCategory(categoryFromParams);
+    // Extract category from the URL only in the browser
+    let categoryFromParams: string | null = null;
+
+    if (typeof window !== 'undefined') {
+      const urlParams = new URLSearchParams(window.location.search);
+      categoryFromParams = urlParams.get("category");
+      setCategory(categoryFromParams);
+    }
 
     const fetchProducts = async () => {
       if (categoryFromParams) {
