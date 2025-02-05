@@ -45,14 +45,14 @@ export default function AboutUs() {
           <div className="grid grid-cols-2 gap-4">
             <div className="relative aspect-[4/3]">
               <img
-                src="photos/1.jpg"
+                src="/images/about us/shop.jpg"
                 alt="Military Store"
                 className="absolute inset-0 w-full h-full object-cover rounded-lg shadow-lg"
               />
             </div>
             <div className="relative aspect-[4/3] mt-4 sm:mt-8">
               <img
-                src="photos/2.jpg"
+                src="/images/hero/slider3.png"
                 alt="Military Equipment"
                 className="absolute inset-0 w-full h-full object-cover rounded-lg shadow-lg"
               />

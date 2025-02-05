@@ -8,17 +8,17 @@ const slides = [
   {
     title: "Providing High Quality",
     subtitle: "Military Products",
-    image: "https://images.unsplash.com/photo-1579453437873-b765a26aba9c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
+    image: "/images/hero/slider1.png",
   },
   {
     title: "Premium Military Gear",
     subtitle: "For Professionals",
-    image: "https://images.unsplash.com/photo-1595591597670-ba12cc1f3d85?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80",
+    image: "/images/hero/slider2.png",
   },
   {
     title: "Tactical Equipment",
     subtitle: "Built to Last",
-    image: "https://images.unsplash.com/photo-1550355291-bbee04a92027?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80",
+    image: "/images/hero/slider3.png",
   },
 ];
 
@@ -57,9 +57,17 @@ export default function HeroSlider() {
                 <div>
                   <h1 className="text-2xl sm:text-4xl md:text-6xl font-bold mb-2 sm:mb-4">{slide.title}</h1>
                   <p className="text-lg sm:text-xl md:text-2xl">{slide.subtitle}</p>
-                  <button className="mt-6 sm:mt-8 px-6 sm:px-8 py-2 sm:py-3 bg-[#b08968] text-white rounded-full hover:bg-[#8e6d53] transition-colors text-sm sm:text-base">
-                    Shop Now
-                  </button>
+                  <button
+  className="mt-6 sm:mt-8 px-6 sm:px-8 py-2 sm:py-3 bg-[#b08968] text-white rounded-full hover:bg-[#8e6d53] transition-colors text-sm sm:text-base"
+  onClick={() => {
+    const phone = "7942687658"; // Replace with the actual WhatsApp number
+    const message = encodeURIComponent("Hello, I'm interested in your military products. Could you provide more details?");
+    window.open(`https://wa.me/${phone}?text=${message}`, "_blank");
+  }}
+>
+  Shop Now
+</button>
+
                 </div>
               </div>
             </div>
