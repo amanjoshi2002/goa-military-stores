@@ -95,3 +95,22 @@
   position: relative;
   flex: 0 0 auto;
 }
+
+/* Custom Styles for Category Cards */
+.category-card {
+  height: 400px; /* Fixed height for the card */
+  width: 300px; /* Fixed width for the card */
+  border-radius: var(--radius); /* Use the defined radius */
+  overflow: hidden; /* Ensure content doesn't overflow */
+  transition: transform 0.3s ease; /* Smooth scaling on hover */
+}
+
+.category-card:hover {
+  transform: scale(1.05); /* Scale effect on hover */
+}
+
+.category-card img {
+  height: 300px; /* Fixed height for the image */
+  width: 100%; /* Full width */
+  object-fit: cover; /* Cover the area without distortion */
+}

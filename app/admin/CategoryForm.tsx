@@ -25,31 +25,10 @@ const CategoryForm: React.FC<CategoryFormProps> = ({ onCategoryAdded, categoryTo
     }
   }, [categoryToEdit]);
 
-  const handlePhotoChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      try {
-        const formData = new FormData();
-        formData.append('file', file);
-        
-        const response = await fetch('/api/upload', {
-          method: 'POST',
-          headers: {
-            'file-name': file.name,
-          },
-          body: file,
-        });
-        
-        const data = await response.json();
-        if (data.success) {
-          setPhoto(data.filePath);
-        } else {
-          throw new Error('Upload failed');
-        }
-      } catch (error) {
-        console.error('Error uploading photo:', error);
-        alert('Error uploading photo');
-      }
+  const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const url = e.target.value; // Assume the user inputs a URL
+    if (url) {
+      setPhoto(url);
     }
   };
 
@@ -86,7 +65,7 @@ const CategoryForm: React.FC<CategoryFormProps> = ({ onCategoryAdded, categoryTo
         className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
         required
       />
-      <input type="file" onChange={handlePhotoChange} className="w-full" required />
+      <input type="text" value={photo} onChange={handlePhotoChange} placeholder="Photo URL" className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" required />
       <button type="submit" className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition">
         {categoryToEdit ? 'Update Category' : 'Add Category'}
       </button>

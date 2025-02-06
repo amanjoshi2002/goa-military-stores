@@ -1,88 +1,114 @@
 "use client";
 
-import { ChevronLeft, ChevronRight, Star } from "lucide-react";
-import useEmblaCarousel from "embla-carousel-react";
-import { useCallback } from "react";
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { Star } from "lucide-react";
 
 const testimonials = [
   {
-    name: "John Smith",
-    role: "Military Professional",
-    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-    content: "The quality of military gear from Noble Military Stores is exceptional. Their products have never let me down in the field.",
-    rating: 5
+    id: 1,
+    name: "Santosh Kumar",
+    rating: 4,
+    testimonial:
+      "Military accessories available\nArmy\nNavy\nAirforce\nCISF\nCRPF\nSecurity\nbut not more items like military clothes, tracksuit.",
   },
   {
-    name: "Sarah Johnson",
-    role: "Security Consultant",
-    image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-    content: "Outstanding service and top-notch tactical equipment. The team's expertise in military gear is impressive.",
-    rating: 5
+    id: 2,
+    name: "Hrishi Mathuria",
+    rating: 4,
+    testimonial:
+      "The only shop near the base that could provide you with all the Military items.",
   },
   {
-    name: "Michael Brown",
-    role: "Veteran",
-    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-    content: "Been a customer for years. Their commitment to quality and authentic military products keeps me coming back.",
-    rating: 5
-  }
+    id: 3,
+    name: "Steffy Mathew",
+    rating: 4,
+    testimonial:
+      "The best and only place in Goa where we get Military, Navy, NCC stuff. Good service.",
+  },
+  {
+    id: 4,
+    name: "Manoj Kumar",
+    rating: 4,
+    testimonial:
+      "Military accessories are available\nOnly one shop in Goa for military purposes.",
+  },
 ];
 
 export default function Testimonials() {
-  const [emblaRef, emblaApi] = useEmblaCarousel({
-    loop: true,
-    align: "start",
-    slidesToScroll: 1
-  });
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const isBrowser = typeof window !== 'undefined'; // Check if running in the browser
 
-  const scrollPrev = useCallback(() => emblaApi && emblaApi.scrollPrev(), [emblaApi]);
-  const scrollNext = useCallback(() => emblaApi && emblaApi.scrollNext(), [emblaApi]);
+  const nextTestimonials = () => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % testimonials.length);
+  };
 
   return (
-    <section id="testimonials" className="py-20 bg-gray-50">
-      <div className="container mx-auto px-4">
-        <h2 className="text-4xl font-bold text-center mb-12">What Our Customers Say</h2>
-        
-        <div className="relative">
-          <div className="embla overflow-hidden" ref={emblaRef}>
-            <div className="embla__container flex">
-              {testimonials.map((testimonial, index) => (
-                <div key={index} className="embla__slide flex-[0_0_100%] min-w-0 md:flex-[0_0_50%] lg:flex-[0_0_33.33%] px-4">
-                  <div className="bg-white rounded-lg shadow-lg p-8">
-                    <div className="flex items-center space-x-4 mb-6">
-                      <img
-                        src={testimonial.image}
-                        alt={testimonial.name}
-                        className="w-16 h-16 rounded-full object-cover"
-                      />
-                      <div>
-                        <h4 className="font-semibold">{testimonial.name}</h4>
-                        <p className="text-sm text-gray-500">{testimonial.role}</p>
-                        <div className="flex mt-1">
-                          {[...Array(testimonial.rating)].map((_, i) => (
-                            <Star key={i} className="w-4 h-4 fill-[#b08968] text-[#b08968]" />
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                    <p className="text-gray-600">{testimonial.content}</p>
-                  </div>
+    <section className="py-16 bg-gray-100">
+      <div className="container mx-auto px-6 md:px-12 lg:px-16">
+        <motion.h2
+          className="text-3xl sm:text-4xl font-bold text-center mb-8"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          What Our Clients Say
+        </motion.h2>
+
+        <div className="relative overflow-hidden">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Display one testimonial for small screens, three for larger screens */}
+            {isBrowser && window.innerWidth < 768 ? (
+              <motion.div
+                key={testimonials[currentIndex].id}
+                className="bg-white shadow-xl rounded-lg p-6 md:p-8 flex flex-col items-center text-center"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.6 }}
+              >
+                <div className="w-20 h-20 rounded-full bg-gray-300 flex items-center justify-center mb-4">
+                  <span className="text-2xl font-bold">{testimonials[currentIndex].name.charAt(0)}</span>
                 </div>
-              ))}
-            </div>
+                <p className="text-lg text-gray-600 italic">"{testimonials[currentIndex].testimonial}"</p>
+                <div className="flex justify-center mt-3">
+                  {[...Array(testimonials[currentIndex].rating)].map((_, i) => (
+                    <Star key={i} className="w-5 h-5 text-yellow-500" fill="currentColor" />
+                  ))}
+                </div>
+                <h4 className="mt-4 font-semibold text-lg">{testimonials[currentIndex].name}</h4>
+              </motion.div>
+            ) : (
+              testimonials.slice(currentIndex, currentIndex + 3).map((testimonial) => (
+                <motion.div
+                  key={testimonial.id}
+                  className="bg-white shadow-xl rounded-lg p-6 md:p-8 flex flex-col items-center text-center"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.6 }}
+                >
+                  <div className="w-20 h-20 rounded-full bg-gray-300 flex items-center justify-center mb-4">
+                    <span className="text-2xl font-bold">{testimonial.name.charAt(0)}</span>
+                  </div>
+                  <p className="text-lg text-gray-600 italic">"{testimonial.testimonial}"</p>
+                  <div className="flex justify-center mt-3">
+                    {[...Array(testimonial.rating)].map((_, i) => (
+                      <Star key={i} className="w-5 h-5 text-yellow-500" fill="currentColor" />
+                    ))}
+                  </div>
+                  <h4 className="mt-4 font-semibold text-lg">{testimonial.name}</h4>
+                </motion.div>
+              ))
+            )}
           </div>
-          
+        </div>
+
+        {/* Navigation Button */}
+        <div className="flex justify-center mt-6">
           <button
-            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 w-10 h-10 flex items-center justify-center bg-white rounded-full shadow-lg hover:bg-gray-100 transition-colors z-10"
-            onClick={scrollPrev}
+            onClick={nextTestimonials}
+            className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-full transition"
           >
-            <ChevronLeft className="w-6 h-6 text-gray-800" />
-          </button>
-          <button
-            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 w-10 h-10 flex items-center justify-center bg-white rounded-full shadow-lg hover:bg-gray-100 transition-colors z-10"
-            onClick={scrollNext}
-          >
-            <ChevronRight className="w-6 h-6 text-gray-800" />
+            Next
           </button>
         </div>
       </div>
