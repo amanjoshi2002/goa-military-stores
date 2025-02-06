@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Footer() {
+  const router = useRouter();
   const [categories, setCategories] = useState<{ _id: string; name: string }[]>([]);
 
   useEffect(() => {
@@ -18,6 +20,10 @@ export default function Footer() {
 
     fetchCategories();
   }, []);
+
+  const handleCategoryClick = (categoryName: string) => {
+    router.push(`/products?category=${categoryName}`);
+  };
 
   return (
     <footer className="bg-gray-900 text-white">
@@ -62,7 +68,14 @@ export default function Footer() {
             <ul className="space-y-2">
               {categories.map((category) => (
                 <li key={category._id}>
-                  <a href={`/category/${encodeURIComponent(category.name)}`} className="text-gray-400 hover:text-white">
+                  <a 
+                    href="#" 
+                    className="text-gray-400 hover:text-white" 
+                    onClick={(e) => { 
+                      e.preventDefault(); 
+                      handleCategoryClick(category.name);
+                    }}
+                  >
                     {category.name}
                   </a>
                 </li>
